@@ -25,6 +25,14 @@ var db = mongojs(databaseUrl, collections);
 db.on('error', function(err) {
   console.log('Database Error:', err);
 });
+
+//setting up handlebars
+var exphbs = require('express-handlebars');
+app.engine('handlebars', exphbs({
+	defaultLayout: 'main'
+}));
+app.set('view engine', 'handlebars');
+
 //================================================
 //Require the controller file
 // require('./controllers/controller.js')(app);
@@ -34,6 +42,21 @@ app.get('/', function(req, res) {
   res.send(index.html);
 });
 
+// 
+app.get('/article', function(req, res) {
+
+  db.articles.find({}, function(err, found) {
+    // show any errors
+    // if (err) {
+    //   console.log(err);
+    // } 
+    // // otherwise, send the books we found to the browser as a json
+    // else {
+    //   res.json(found);
+    // }
+  });
+  res.send(index.html);
+});
 //One route to get from db one to post to db
 //==================================ROUTES==================================
 // app.get('/', function(req, res){
@@ -49,8 +72,8 @@ app.get('/scrape', function(req, res) {
 	request('https://finance.yahoo.com/news/former-facebook-insider-why-felt-000000995.html', function (error, response, html) {
 
 		// Load the html into cheerio and save it to a var.
-	  // '$' becomes a shorthand for cheerio's selector commands, 
-	  //  much like jQuery's '$'.
+	  	// '$' becomes a shorthand for cheerio's selector commands, 
+	  	//  much like jQuery's '$'.
 	  var $ = cheerio.load(html);
 	  //console.log(html);
 	  // an empty array to save the data that we'll scrape
@@ -67,8 +90,9 @@ app.get('/scrape', function(req, res) {
 
 		    var results = [];
 		    results.push({
-		      title: title,
-		      article: article
+		    	myTitle: "Article 1",
+		      	title: title,
+		      	article: article
 		    });
 		    /*var anchor = $(this).find('a')
 		    var title = anchor.text()
@@ -82,9 +106,9 @@ app.get('/scrape', function(req, res) {
 		  // 	var stuff = req.body;
 		  // 	console.log(stuff);
 		  	//defining each item in the collection cause hackers brah. They could edit the html in inspector and add data to the database.
-		  	// db.articles.insert({"title": title}, function(err, docs){
-		   //  	if (err) throw err;
-		  	// });
+		  	db.articles.update(results, function(err, docs){
+		    	if (err) throw err;
+		  	});
 	    });
 	});
 });
