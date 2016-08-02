@@ -1,6 +1,9 @@
 
   <div id="wrapper">
+  {{#each articles}}
     <form id="userinput">
+    <h2>{{this.title}}</h2>
+    <p>{{this.article}}</p>
         <input type="text" id="comment" placeholder="What do you think?"/>
       <br />
       <button type="submit" id="addComment">Add New</button>
@@ -10,8 +13,7 @@
             <tr><th>Title</th><th>Author</th><th>Read/Unread</th></tr>
       </div>
       <button type="submit" id="deleteComment">Delete</button>
+      {{/each}}
     </div>
   </div>
-  <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
-  <script src="app.js"></script>
 

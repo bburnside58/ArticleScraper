@@ -37,37 +37,12 @@ app.set('view engine', 'handlebars');
 //Require the controller file
 // require('./controllers/controller.js')(app);
 //================================================
-// simple index route
-app.get('/', function(req, res) {
-  res.send(index.html);
-});
 
-// 
-app.get('/article', function(req, res) {
 
-  db.articles.find({}, function(err, found) {
-    // show any errors
-    // if (err) {
-    //   console.log(err);
-    // } 
-    // // otherwise, send the books we found to the browser as a json
-    // else {
-    //   res.json(found);
-    // }
-  });
-  res.send(index.html);
-});
 //One route to get from db one to post to db
 //==================================ROUTES==================================
-// app.get('/', function(req, res){
-// 	db.info.find({}, function(err, docs){
-// 	    	if (err) throw err;
-// 	    	console.log(docs);
-// 	    	res.json(docs);
-// 	  	});
-// });
-// Post to the mongo database
-app.get('/scrape', function(req, res) {
+// Post to the mongo database and render handlebars
+app.get('/', function(req, res) {
 //==================================CHEERIO==================================
 	request('https://finance.yahoo.com/news/former-facebook-insider-why-felt-000000995.html', function (error, response, html) {
 
@@ -106,12 +81,22 @@ app.get('/scrape', function(req, res) {
 		  // 	var stuff = req.body;
 		  // 	console.log(stuff);
 		  	//defining each item in the collection cause hackers brah. They could edit the html in inspector and add data to the database.
-		  	db.articles.update(results, function(err, docs){
+		  	db.articles.insert(results, function(err, docs){
 		    	if (err) throw err;
-		  	});
-	    });
-	});
-});
+		    		//Need a find 
+				db.articles.find({}, function(err, docs){
+					if (err) throw err;
+					// render the index page and pass the data to handlebars
+					res.render('index',  {
+
+						articles: docs
+
+					}); // end res.render()
+				});//End of find{}
+		  	});//End of db.articles.update
+	    });//End of .each
+	});//End of Request
+});//End of / route
 
 
 
