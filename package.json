@@ -1,0 +1,29 @@
+{
+  "name": "articlescraper",
+  "version": "1.0.0",
+  "description": "Using Cheerio to scrape articles and allow users to post comments and storing in mongodb. Tech used: Node.js, Mongodb, Express, Cheerio",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cheerio": "^0.20.0",
+    "express": "^4.14.0",
+    "mongojs": "^2.4.0",
+    "morgan": "^1.7.0",
+    "request": "^2.74.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bburnside58/ArticleScraper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bburnside58/ArticleScraper/issues"
+  },
+  "homepage": "https://github.com/bburnside58/ArticleScraper#readme"
+}
