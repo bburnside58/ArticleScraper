@@ -7,14 +7,14 @@ $(document).on('click', '#addComment', function(){
     url: '/submit',
     dataType: 'json',
     data: {
-      title: $('#comment').val(),
+      comment: $('#comment').val(),
       created: Date.now()
     }
   })
   .done(function(data){
     console.log(data);
-    console.log("ajax is working");
-    // getComments();
+    console.log("ajax is working=======================================");
+    getComments();
     $('#comment').val("");
   }
   );
@@ -28,7 +28,6 @@ function getComments(){
       $('#postedComments').prepend(data[i]);
     }
     console.log(data);
-    // $('#unread').prepend('<tr><th>Title</th><th>Author</th><th>Read/Unread</th></tr>');
   });
 }
 

@@ -48,9 +48,9 @@ app.post('/submit', function(req, res){
 	console.log("hello");
 	var comments = req.body;
    console.log(req.body);
-    db.articles.insert(comments, function(err, docs){
+    db.articles.update({"myTitle": "Article 1"}, {$set: {"comment": comments}}, function(err, docs){
     	if (err) throw err;
-    	console.log("here is the docs from /submit " + docs);
+    	console.log(docs);
     });
 
 });
@@ -58,7 +58,7 @@ app.post('/submit', function(req, res){
 // find all comments
 app.get('/comments', function(req, res) {
   // go into the mongo collection, and find all docs
-  db.articles.find({comments}, function(err, found) {
+  db.articles.find({}, function(err, found) {
     // show any errors
     // if (err) throw err;
     if (err) {
@@ -67,6 +67,8 @@ app.get('/comments', function(req, res) {
     // otherwise, send the json
     else {
       res.json(found);
+      //found is the entire database
+      // console.log(found);
     }
   });
 });
