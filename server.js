@@ -5,6 +5,8 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var request = require('request'); // Snatches html from urls
 var cheerio = require('cheerio'); // Scrapes our html
+var bodyParser = require('body-parser');//I don't think I need body-parser for this app...
+
 
 // configure our app for morgan and body parser
 app.use(logger('dev'));
@@ -42,6 +44,33 @@ app.set('view engine', 'handlebars');
 //One route to get from db one to post to db
 //==================================ROUTES==================================
 // Post to the mongo database and render handlebars
+app.post('/submit', function(req, res){
+	console.log("hello");
+	var comments = req.body;
+   console.log(req.body);
+    db.articles.insert(comments, function(err, docs){
+    	if (err) throw err;
+    	console.log("here is the docs from /submit " + docs);
+    });
+
+});
+
+// find all comments
+app.get('/comments', function(req, res) {
+  // go into the mongo collection, and find all docs
+  db.articles.find({comments}, function(err, found) {
+    // show any errors
+    // if (err) throw err;
+    if (err) {
+      console.log(err);
+    } 
+    // otherwise, send the json
+    else {
+      res.json(found);
+    }
+  });
+});
+
 app.get('/', function(req, res) {
 //==================================CHEERIO==================================
 	request('https://finance.yahoo.com/news/former-facebook-insider-why-felt-000000995.html', function (error, response, html) {
@@ -76,7 +105,7 @@ app.get('/', function(req, res) {
 
 	    	// Scrape information from the web page, put it in an object 
 	    	// and add it to the result array. 
-	  		console.log(results);
+	  		//console.log(results);
 		 	// // save the request body as an object called book
 		  // 	var stuff = req.body;
 		  // 	console.log(stuff);
@@ -97,13 +126,6 @@ app.get('/', function(req, res) {
 	    });//End of .each
 	});//End of Request
 });//End of / route
-
-
-
-
-
-
-
 
 // listen on port 8080
 app.listen(8080, function() {

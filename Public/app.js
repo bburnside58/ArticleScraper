@@ -1,4 +1,7 @@
-$('#addComment').on('click', function(){
+//Handle User Comments
+//We can use ajax to invoke routes as well through url:
+//These routes can be a POST route to the database
+$(document).on('click', '#addComment', function(){
   $.ajax({
     type: "POST",
     url: '/submit',
@@ -11,7 +14,7 @@ $('#addComment').on('click', function(){
   .done(function(data){
     console.log(data);
     console.log("ajax is working");
-    getComments();
+    // getComments();
     $('#comment').val("");
   }
   );
@@ -20,10 +23,13 @@ $('#addComment').on('click', function(){
 
 function getComments(){
   //$('#unread').empty();
-  $.getJSON('/article', function(data) {
+  $.getJSON('/comments', function(data) {
     for (var i = 0; i<data.length; i++){
-      $('#unread').prepend(data[i].title);
+      $('#postedComments').prepend(data[i]);
     }
+    console.log(data);
     // $('#unread').prepend('<tr><th>Title</th><th>Author</th><th>Read/Unread</th></tr>');
   });
 }
+
+getComments();
